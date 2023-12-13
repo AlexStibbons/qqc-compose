@@ -23,8 +23,16 @@ abstract class QueryFlowUseCase<out ReturnType, in Params> where ReturnType : Fl
             mainJob.cancel()
     }
 
-    /**
-     * but will the flow be cancelled? do we have structured concurrency here??
-     */
-
 }
+
+/**
+ * but will the flow be cancelled? do we have structured concurrency here??
+ *
+ * i guess it should?
+ * if the parent job is cancelled, the children are cancelled too.
+ *
+ * Flows adhere to the general cooperative cancellation of coroutines.
+ * As usual, flow collection can be cancelled when the flow is suspended in a
+ * cancellable suspending function (like delay)
+ * https://kotlinlang.org/docs/flow.html#flow-cancellation-basics
+ */
