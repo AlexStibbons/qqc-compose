@@ -13,9 +13,13 @@ abstract class QueryFlowUseCase<out ReturnType, in Params> where ReturnType : Fl
     abstract suspend fun run(params: Params?): ReturnType
 
     operator fun invoke(
-        params: Params? = null
+        params: Params? = null,
+        onResult: (ReturnType) -> Unit = {}
     ) {
-        uiScope.launch { run(params).flowOn(Dispatchers.IO) }
+        uiScope.launch {
+            val result: ReturnType = run(params).flowOn(Dispatchers.IO) as ReturnType
+            onResult(result)
+        }
     }
 
     fun cancel() {

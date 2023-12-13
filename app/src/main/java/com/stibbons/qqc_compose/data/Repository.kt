@@ -7,7 +7,7 @@ internal interface Repository {
 }
 
 internal class RepoImpl(
-    val someService: SomeService
+    private val someService: SomeService
 ) : Repository {
     override suspend fun fetchData(): Flow<Int> = someService.fetchData()
 }
