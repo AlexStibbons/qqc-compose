@@ -5,6 +5,8 @@ import com.stibbons.qqc_compose.data.RepoImpl
 import com.stibbons.qqc_compose.data.Repository
 import com.stibbons.qqc_compose.data.SomeService
 import com.stibbons.qqc_compose.domain.FetchData
+import com.stibbons.qqc_compose.presentation.MainViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 
@@ -13,14 +15,15 @@ class QqcApplication : Application() {
         super.onCreate()
 
         startKoin{
-            modules(appModule)
+            modules(monolithModule)
         }
     }
 }
 
 
-val appModule = module {
+val monolithModule = module {
     single { SomeService() }
     single<Repository> { RepoImpl(get()) }
     factory { FetchData(get()) }
+    viewModel { MainViewModel(get()) }
 }
