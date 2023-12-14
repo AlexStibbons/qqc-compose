@@ -4,42 +4,34 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stibbons.qqc_compose.domain.Fetch2
-import com.stibbons.qqc_compose.domain.FetchUseCase
-import kotlinx.coroutines.flow.catch
+import com.stibbons.qqc_compose.domain.FetchData
+import com.stibbons.qqc_compose.domain.ItemDomain
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 internal class MainViewModel(
-    private val fetchData: FetchUseCase,
-    private val fetchD2: Fetch2
+    private val fetchData: FetchData
 ): ViewModel() {
 
     private var _state = MutableLiveData<ViewState>()
     val screenState: LiveData<ViewState> get() = _state
 
-    fun fetchData() {
-        fetchData { resultFlow ->
-            resultFlow
-                .onEach { _state.value = ViewState.Item(it) }
-                .launchIn(viewModelScope) // dumb, we're wrapping a doubly wrapped coroutine in a coroutine
-        }
-    }
-
-    override fun onCleared() {
-        fetchData.cancel() // serves no purpose, viewModelScope takes care of it IF it's parent to mainJob
-        super.onCleared()
-    }
-
-    fun fetch2() = viewModelScope.launch {
-        fetchD2.execute()
-            .onEach { _state.value = ViewState.Item(it) }
+    fun fetchData() = viewModelScope.launch {
+        fetchData.run()
+            .onEach { result -> _state.value = ViewState.Item(result.toItemPresentation()) }
             .collect()
     }
 
     sealed class ViewState {
-        data class Item(val number: Int) : ViewState()
+        data class Item(val data: ItemPresentation) : ViewState()
     }
 }
+
+internal data class ItemPresentation(
+    val ordinal: Int
+)
+
+internal fun ItemDomain.toItemPresentation() = ItemPresentation(
+    ordinal = this.ordinal
+)
