@@ -12,12 +12,8 @@ internal class FetchData(
         return repository.fetchData()
             .map {result ->
                 ItemDomain(result)
-            }.flowOn(dispatcher)
+            }
+            .flowOn(dispatcher)
     }
 }
-
-data class ItemDomain(
-    val ordinal: Int
-)
-
 
