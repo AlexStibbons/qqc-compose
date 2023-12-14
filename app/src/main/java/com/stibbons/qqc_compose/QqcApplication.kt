@@ -7,15 +7,16 @@ import com.stibbons.qqc_compose.data.SomeService
 import com.stibbons.qqc_compose.domain.FetchData
 import com.stibbons.qqc_compose.presentation.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 class QqcApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        startKoin{
-            modules(monolithModule)
+        startKoin {
+            loadKoinModules(listOf(monolithModule))
         }
     }
 }
