@@ -18,11 +18,11 @@ internal class MainViewModel(
 
     fun fetchData() = viewModelScope.launch {
         fetchData.run()
-            .onEach { result -> _state.value = ViewState.Item(result.toItemPresentation()) }
+            .onEach { result -> _state.value = ViewState.Item(result.toPresentation()) }
             .collect()
     }
 
     sealed class ViewState {
-        data class Item(val data: ItemPresentation) : ViewState()
+        data class Item(val data: MsgItemPresentation) : ViewState()
     }
 }

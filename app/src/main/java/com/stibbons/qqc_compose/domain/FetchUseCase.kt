@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.map
 
 internal class FetchData(
     private val repository: Repository
-): UseCase<Unit, Flow<ItemDomain>>() {
-    override suspend fun run(input: Unit?): Flow<ItemDomain> {
+): UseCase<Unit, Flow<MsgItemDomain>>() {
+    override suspend fun run(input: Unit?): Flow<MsgItemDomain> {
         return repository.fetchData()
             .map {result ->
-                ItemDomain(result)
+                MsgItemDomain(result)
             }
             .flowOn(dispatcher)
     }
