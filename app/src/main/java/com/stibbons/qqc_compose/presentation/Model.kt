@@ -3,7 +3,7 @@ package com.stibbons.qqc_compose.presentation
 import com.stibbons.qqc_compose.R
 import com.stibbons.qqc_compose.domain.MsgItemDomain
 
-internal data class MsgItemPresentation(
+data class MsgItemPresentation(
     val isReceived: Boolean,
     val text: Int
 )

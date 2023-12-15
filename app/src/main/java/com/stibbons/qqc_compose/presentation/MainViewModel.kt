@@ -26,6 +26,7 @@ internal class MainViewModel(
             .collect()
     }
 
+
     sealed class ViewState {
         data class Item(val data: MsgItemPresentation) : ViewState()
     }

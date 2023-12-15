@@ -12,4 +12,5 @@
     <string name="nine">Nine</string>
     <string name="ten">Ten</string>
     <string name="error">Error</string>
+    <string name="title_activity_static_screen">StaticScreenActivity</string>
 </resources>
