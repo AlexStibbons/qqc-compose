@@ -30,6 +30,5 @@ internal class MainViewModel(
 
     sealed class ViewState {
         data class Item(val data: MsgItemPresentation) : ViewState()
-        data object Completed : ViewState()
     }
 }
