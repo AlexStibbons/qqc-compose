@@ -5,15 +5,19 @@ import com.stibbons.qqc_compose.domain.MsgItemDomain
 
 data class MsgItemPresentation(
     val isReceived: Boolean,
-    val text: Int
+    val text: Int,
+    val isDone: Boolean = false
 )
 
 internal fun MsgItemDomain.toPresentation() = MsgItemPresentation(
     isReceived = this.ordinal.isReceived,
-    msgText[this.ordinal] ?: R.string.error
+    msgText[this.ordinal] ?: R.string.error,
+    this.ordinal == -1
+
 )
 
 internal val msgText = mapOf(
+    -1 to R.string.complete,
     1 to R.string.one,
     2 to R.string.two,
     3 to R.string.three,
@@ -27,5 +31,5 @@ internal val msgText = mapOf(
 )
 
 internal val Int.isReceived: Boolean get() {
-    return this % 2 != 0
+    return if (this == -1) false else this % 2 != 0
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stibbons.qqc_compose.domain.FetchData
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
@@ -29,5 +30,6 @@ internal class MainViewModel(
 
     sealed class ViewState {
         data class Item(val data: MsgItemPresentation) : ViewState()
+        data object Completed : ViewState()
     }
 }
