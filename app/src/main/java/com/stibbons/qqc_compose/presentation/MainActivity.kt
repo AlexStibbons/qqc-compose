@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -20,9 +21,13 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,8 +62,13 @@ internal fun MainScreen(vm: MainViewModel) {
 
     val viewState = vm.screenState.observeAsState().value
 
-    var msgList = remember {
+    //TODO should survive orientation change
+    val msgList = remember {
         mutableStateListOf<MsgItemPresentation>()
+    }
+
+    val btnIsEnabled = rememberSaveable {
+        mutableStateOf(true)
     }
 
     QQCComposeTheme {
@@ -73,14 +83,21 @@ internal fun MainScreen(vm: MainViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            BtnStart {
-                msgList.clear()
+            BtnStart(btnIsEnabled) {
+                btnIsEnabled.value = false
                 vm.fetchData()
+                msgList.clear()
             }
 
             LazyColumn {
-               items(items = msgList) { msg ->
-                   if (msg.isDone) MsgComplete(msg = msg) else MsgView(msg = msg)
+               items(
+                   items = msgList,
+                   //key = { msg -> msg.ordinal }
+               ) { msg ->
+                   if (msg.isDone) {
+                       MsgComplete(msg = msg)
+                       btnIsEnabled.value = true
+                   } else MsgView(msg = msg)
                }
             }
 
@@ -151,13 +168,15 @@ fun MsgComplete(msg: MsgItemPresentation) {
 }
 
 @Composable
-fun BtnStart(action: () -> Unit) {
+fun BtnStart(isEnabled: MutableState<Boolean>, action: () -> Unit) {
     Box(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(top = 32.dp),
         contentAlignment = Alignment.Center
     ) {
         Button(
+            enabled = isEnabled.value,
             onClick = action,
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.purple_200))
@@ -175,9 +194,7 @@ fun BtnStart(action: () -> Unit) {
 @Composable
 fun DefaultPreview() {
     QQCComposeTheme {
-       BtnStart {
-           ""
-       }
+
 
     }
 }

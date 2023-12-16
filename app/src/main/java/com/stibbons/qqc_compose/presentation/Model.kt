@@ -1,15 +1,20 @@
 package com.stibbons.qqc_compose.presentation
 
+import android.os.Parcelable
 import com.stibbons.qqc_compose.R
 import com.stibbons.qqc_compose.domain.MsgItemDomain
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class MsgItemPresentation(
+    val id: Int,
     val isReceived: Boolean,
     val text: Int,
     val isDone: Boolean = false
-)
+): Parcelable
 
 internal fun MsgItemDomain.toPresentation() = MsgItemPresentation(
+    this.ordinal,
     isReceived = this.ordinal.isReceived,
     msgText[this.ordinal] ?: R.string.error,
     this.ordinal == -1
