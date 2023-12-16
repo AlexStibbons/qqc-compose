@@ -18,10 +18,10 @@ internal class MainViewModel(
     val screenState: LiveData<ViewState> get() = _state
 
     init {
-        fetchData()
+        //fetchData()
     }
 
-    private fun fetchData() = viewModelScope.launch {
+    fun fetchData() = viewModelScope.launch {
         fetchData.run()
             .onEach { result -> _state.value = ViewState.Item(result.toPresentation()) }
             .collect()
