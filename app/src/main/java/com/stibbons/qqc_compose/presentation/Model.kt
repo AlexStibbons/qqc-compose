@@ -32,7 +32,11 @@ internal val msgText = mapOf(
     7 to R.string.seven,
     8 to R.string.eight,
     9 to R.string.nine,
-    10 to R.string.ten
+    10 to R.string.ten,
+    11 to R.string.eleven,
+    12 to R.string.twelve,
+    13 to R.string.thirteen,
+    14 to R.string.fourteen
 )
 
 internal val Int.isReceived: Boolean get() {

@@ -11,9 +11,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -89,15 +95,19 @@ internal fun MainScreen(vm: MainViewModel) {
                 msgList.clear()
             }
 
-            LazyColumn {
+            val listState = rememberLazyListState()
+
+            LazyColumn(
+                state = listState
+            ) {
                items(
                    items = msgList,
-                   //key = { msg -> msg.ordinal }
                ) { msg ->
                    if (msg.isDone) {
                        MsgComplete(msg = msg)
                        btnIsEnabled.value = true
                    } else MsgView(msg = msg)
+
                }
             }
 
@@ -127,9 +137,10 @@ fun MsgView(msg: MsgItemPresentation) {
         Card(
             shape = RoundedCornerShape(20.dp),
             elevation = 10.dp,
-            modifier = Modifier.apply {
-                padding(10.dp)
-            },
+            modifier = Modifier
+                .width(200.dp)
+                .wrapContentHeight()
+                .padding(10.dp),
             backgroundColor = colorResource(id = cardColor)
         ) {
             Text(

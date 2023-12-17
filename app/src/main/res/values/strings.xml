@@ -1,17 +1,31 @@
 <resources>
     <string name="app_name">QQC-Compose</string>
 
-    <string name="one">One</string>
-    <string name="two">Two</string>
-    <string name="three">Three</string>
-    <string name="four">Four</string>
-    <string name="five">Five</string>
-    <string name="six">Six</string>
-    <string name="seven">Seven</string>
-    <string name="eight">Eight</string>
-    <string name="nine">Nine</string>
-    <string name="ten">Ten</string>
-    <string name="error">Error</string>
-    <string name="title_activity_static_screen">StaticScreenActivity</string>
+    <string name="title">Sonnet LXIX</string>
+
+
+    <string name="btnStart">Start</string>
+
+    <string name="one">Those parts of thee that the world\'s eye doth view</string>
+    <string name="two">Want nothing that the thought of hearts can mend.</string>
+    <string name="three">All tongues, the voice of souls, give thee that due,</string>
+    <string name="four">Utt\'ring bare truth, even so as foes commend.</string>
+    <string name="five">Thine outward thus with outward praise is crown\'d;</string>
+    <string name="six">But those same tongues that give thee so thine own</string>
+    <string name="seven">In other accents do this praise confound</string>
+    <string name="eight">By seeing farther than the eye hath shown.</string>
+    <string name="nine">They look into the beauty of thy mind,</string>
+    <string name="ten">And that, in guess, they measure by the deeds;</string>
+    <string name="eleven">Then, churls, their thoughts, although their eyes were kind,</string>
+    <string name="twelve">To thy fair flower add the rank smell of weeds.</string>
+    <string name="thirteen">But why thy odour matcheth not thy show,</string>
+    <string name="fourteen">The soil is this — that thou dost common grow.</string>
+
+
     <string name="complete">Completed</string>
+
+    <string name="error">Error</string>
+
+    <string name="title_activity_static_screen">StaticScreenActivity</string>
+
 </resources>

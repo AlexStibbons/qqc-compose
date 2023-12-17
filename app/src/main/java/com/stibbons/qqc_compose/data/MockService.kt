@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 
-private val MOCK_DATA = (1..10)
+private val MOCK_DATA = (1..14)
 
 internal class SomeService {
     suspend fun fetchData(): Flow<Int> = MOCK_DATA.asFlow()
