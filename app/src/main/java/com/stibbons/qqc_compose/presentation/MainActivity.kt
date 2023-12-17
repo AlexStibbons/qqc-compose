@@ -45,14 +45,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.stibbons.qqc_compose.R
 import com.stibbons.qqc_compose.domain.exhaustive
+import com.stibbons.qqc_compose.ui.theme.Purple200
 import com.stibbons.qqc_compose.ui.theme.QQCComposeTheme
+import com.stibbons.qqc_compose.ui.theme.Teal200
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    /***
+    /**
      * unsure where VM and state observables should be?
+     *
+     * see koin compose; what the docs recommend
+     * passing the VM to composable screen enables us to inject a mock during testing?
+     *
+     * if VM is nullable, cannot require nonNull in Composable bc then the preview won't start
+     *
      */
 
     private val mainViewModel: MainViewModel by viewModel()
@@ -143,8 +152,8 @@ fun CreateList(
 
 @Composable
 fun MsgView(msg: MsgItemPresentation) {
-    val cardColor = if (msg.isReceived) R.color.teal_200 else R.color.white
-    val textColor = if (msg.isReceived) R.color.white else R.color.black
+    val cardColor = if (msg.isReceived) Teal200 else Color.White
+    val textColor = if (msg.isReceived) Color.White else Color.Black
 
     Box(
         modifier = Modifier
@@ -159,11 +168,11 @@ fun MsgView(msg: MsgItemPresentation) {
                 .width(200.dp)
                 .wrapContentHeight()
                 .padding(10.dp),
-            backgroundColor = colorResource(id = cardColor)
+            backgroundColor = cardColor
         ) {
             Text(
                 modifier = Modifier.padding(10.dp),
-                color = colorResource(id = textColor),
+                color = textColor,
                 text = stringResource(id = msg.text)
             )
         }
@@ -185,11 +194,11 @@ fun MsgComplete(msg: MsgItemPresentation) {
             modifier = Modifier.apply {
                 padding(10.dp)
             },
-            backgroundColor = colorResource(id = R.color.purple_200)
+            backgroundColor = Purple200
         ) {
             Text(
                 modifier = Modifier.padding(10.dp),
-                color = colorResource(id = R.color.white),
+                color = Color.White,
                 text = stringResource(id = msg.text)
             )
         }
@@ -208,7 +217,7 @@ fun BtnStart(isEnabled: MutableState<Boolean>, action: () -> Unit) {
             enabled = isEnabled.value,
             onClick = action,
             shape = RoundedCornerShape(20.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.purple_200))
+            colors = ButtonDefaults.buttonColors(backgroundColor = Purple200)
         ) {
             Text(
                 text = "Start",
@@ -222,8 +231,5 @@ fun BtnStart(isEnabled: MutableState<Boolean>, action: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    QQCComposeTheme {
-
-
-    }
+    
 }
