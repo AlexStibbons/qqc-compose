@@ -27,11 +27,13 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -44,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import com.stibbons.qqc_compose.R
 import com.stibbons.qqc_compose.domain.exhaustive
 import com.stibbons.qqc_compose.ui.theme.QQCComposeTheme
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -73,6 +76,7 @@ internal fun MainScreen(vm: MainViewModel) {
         mutableStateListOf<MsgItemPresentation>()
     }
 
+    //TODO why is flag here? can it be better?
     val btnIsEnabled = rememberSaveable {
         mutableStateOf(true)
     }
@@ -95,21 +99,8 @@ internal fun MainScreen(vm: MainViewModel) {
                 msgList.clear()
             }
 
-            val listState = rememberLazyListState()
 
-            LazyColumn(
-                state = listState
-            ) {
-               items(
-                   items = msgList,
-               ) { msg ->
-                   if (msg.isDone) {
-                       MsgComplete(msg = msg)
-                       btnIsEnabled.value = true
-                   } else MsgView(msg = msg)
-
-               }
-            }
+            CreateList(items = msgList, btnState = btnIsEnabled)
 
             when (viewState) {
                 is MainViewModel.ViewState.Item -> {
@@ -121,6 +112,33 @@ internal fun MainScreen(vm: MainViewModel) {
 
         }
     }
+}
+
+@Composable
+fun CreateList(
+    items: List<MsgItemPresentation>,
+    btnState: MutableState<Boolean>
+) {
+
+    val listState = rememberLazyListState()
+
+    LazyColumn(
+        state = listState
+    ) {
+        items(
+            items = items,
+        ) { msg ->
+            if (msg.isDone) {
+                MsgComplete(msg = msg)
+                btnState.value = true
+            } else MsgView(msg = msg)
+
+            /*LaunchedEffect(listState) {
+                listState.scrollToItem(items.lastIndex)
+            }*/ //TODO this glitches
+        }
+    }
+
 }
 
 @Composable
