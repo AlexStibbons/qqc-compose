@@ -1,6 +1,6 @@
 # qqc-compose
 
-Creted to get to know Composable functions and a bit of Flow.
+Created to get to know Composable functions and a bit of Flow.
 
 current state:
 
