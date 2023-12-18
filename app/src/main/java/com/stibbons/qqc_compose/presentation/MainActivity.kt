@@ -102,6 +102,8 @@ internal fun MainScreen(vm: MainViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Title()
+
             BtnStart(btnIsEnabled) {
                 btnIsEnabled.value = false
                 vm.fetchData()
@@ -122,6 +124,17 @@ internal fun MainScreen(vm: MainViewModel) {
         }
     }
 }
+@Composable
+fun Title() {
+    Column{
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 16.dp),
+            text = stringResource(id = R.string.title))
+    }
+}
 
 @Composable
 fun CreateList(
@@ -140,11 +153,14 @@ fun CreateList(
             if (msg.isDone) {
                 MsgComplete(msg = msg)
                 btnState.value = true
-            } else MsgView(msg = msg)
-
-            /*LaunchedEffect(listState) {
-                listState.scrollToItem(items.lastIndex)
-            }*/ //TODO this glitches
+            } else {
+                MsgView(msg = msg)
+                //TODO not the  best place for the scroll to item, but okay for qqc-compose
+                LaunchedEffect(listState) {
+                    if (!listState.isScrollInProgress)
+                    listState.scrollToItem(items.lastIndex)
+                }
+            }
         }
     }
 
@@ -209,8 +225,7 @@ fun MsgComplete(msg: MsgItemPresentation) {
 fun BtnStart(isEnabled: MutableState<Boolean>, action: () -> Unit) {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 32.dp),
+            .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Button(
@@ -220,7 +235,7 @@ fun BtnStart(isEnabled: MutableState<Boolean>, action: () -> Unit) {
             colors = ButtonDefaults.buttonColors(backgroundColor = Purple200)
         ) {
             Text(
-                text = "Start",
+                text = "Start reading",
                 color = Color.White
             )
         }
@@ -231,5 +246,5 @@ fun BtnStart(isEnabled: MutableState<Boolean>, action: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    
+
 }
